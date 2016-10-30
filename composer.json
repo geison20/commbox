@@ -1,0 +1,28 @@
+{
+    "name": "root/mvcestruturado.app",
+    "authors": [
+        {
+            "name": "Geisson Machado Antunes",
+            "email": "geisonnm@hotmail.com"
+        }
+    ],
+    "require": {
+        "geissonmachado/helpers" : "dev-master",
+        "vlucas/phpdotenv": "^2.2",
+        "symfony/http-foundation": "^3.0"
+
+    },
+
+    "autoload":
+    {
+        "psr-4":{
+
+            "App\\": "App/"
+        },
+        "files" : [
+          "App/Helpers/renderView.php",
+          "App/Helpers/dd.php",
+          "App/Helpers/maskCPF.php"
+        ]
+    }
+}

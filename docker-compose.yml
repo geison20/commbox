@@ -1,0 +1,84 @@
+version: "2"
+services:
+
+
+
+  # WEB-SERVER
+  nginx:
+    image: geison200/nginx_dockerfile
+    ports:
+        - 80:80
+    links:
+        - php
+    volumes_from:
+        - app-volume
+    container_name: nginx-webserver-container
+
+
+
+
+  # PHP
+  php:
+    image: geison200/php_dockerfile
+    expose:
+        - 9000
+    links:
+        - mysql
+    volumes_from:
+        - app-volume
+    container_name: php-container
+
+
+
+  # app- volumes
+  app-volume:
+    image: geison200/php_dockerfile
+    volumes:
+        - .:/usr/share/nginx/html
+    command: "true"
+    container_name: app-volume
+
+
+
+  # mysql
+  mysql:
+    image: mysql:5.7
+    ports:
+        - 3306:3306
+    volumes_from:
+        - data
+    environment:
+        # use para setar uma senha para o usuario root
+        MYSQL_ROOT_PASSWORD: 12345
+        # cria um schema incial
+        MYSQL_DATABASE: docker_schema
+        # crie um usuario diferente de root
+        #MYSQL_USER: admin
+        # de um password para esse usuario
+        #MYSQL_PASSWORD: 12345
+    container_name: mysql-container
+
+
+
+  # acess container mysql
+  # docker exec -it CONTAINER_ID /bin/bash
+
+  # mysql storage volume
+  data:
+    image: mysql:5.7
+    volumes:
+        - "./.data/db-mysql:/var/lib/mysql"
+    command: "true"
+    container_name: mysql-volume
+
+
+  #phpadmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+        - 7000:80
+    links:
+        - mysql
+    environment:
+        PMA_HOST: mysql
+    container_name: phpmyadmin-container
